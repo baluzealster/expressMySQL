@@ -4,7 +4,7 @@
   "description": "simple mysql express backend application",
   "main": "server.js",
   "scripts": {
-    "start":"nodemon run server.js"
+    "start": "nodemon run server.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,8 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
-    "mysql": "^2.18.1"
+    "is-empty": "^1.2.0",
+    "mysql": "^2.18.1",
+    "validator": "^13.1.1"
   }
 }
