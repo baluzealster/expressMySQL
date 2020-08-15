@@ -2,17 +2,12 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const connection = require("./models/db");
-
-//establishing connection to the mySQL server
-connection.connect((err) => {
-  if (err) throw err;
-  console.log("connection established successfully");
-});
-
+const users = require("./routes/user");
 // parse requests of content-type: application/json
 app.use(bodyParser.json());
 // parse requests of content-type: application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use("/api/users", users);
 
 // port establishment to the app
 const port = process.env.PORT || 3000;
