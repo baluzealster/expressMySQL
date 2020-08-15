@@ -5,6 +5,7 @@ const User = function (user) {
     (this.email = user.email),
     (this.phone = user.phone),
     (this.profilePic = user.profilePic),
+    (this.password = user.password),
     (this.date = new Date());
 };
 
@@ -16,6 +17,7 @@ User.create = (newUser, result) => {
     email: newUser.email,
     phone: newUser.phone,
     profilePic: newUser.profilePic,
+    password: newUser.password,
   };
   sql.query("INSERT INTO users SET ?", params, (err, res) => {
     if (err) {
@@ -29,18 +31,16 @@ User.create = (newUser, result) => {
 
 //get the user from the database on logIn
 User.getUserByCreds = (user, result) => {
-  const query = `
-SELECT * 
-FROM users 
-WHERE username=${user.username} AND password=${user.password}`;
+  const query = `SELECT * FROM users WHERE username="${user.username}" AND password="${user.password}";`;
   sql.query(query, (err, res) => {
     if (err) throw err;
-    result(null, res[0]);
+    console.log(res);
+    result(null, res);
   });
 };
 
-User.getUserByemail = (email, result) => {
-  sql.query(`SELECT * FROM users WHERE email="${email}";`, (err, res) => {
+User.getUserByEmail = (email, result) => {
+  sql.query(`SELECT email FROM users WHERE email="${email}";`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err);
