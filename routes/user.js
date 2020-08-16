@@ -79,8 +79,10 @@ Router.put("/update", (req, res) => {
         if (!emailExisted) {
           res.send("email doen't existed");
         } else {
+          console.log(req.body);
           if (code === 1) {
             //update password
+            console.log(command);
             User.updatePassword(command, (err, passupdated) => {
               if (err) {
                 console.error(err.msg);

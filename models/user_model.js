@@ -76,6 +76,7 @@ User.updateName = (profile, result) => {
 //Update password in the database
 
 User.updatePassword = (profile, result) => {
+  console.log(profile);
   const query = `UPDATE users SET password=? WHERE email=?`;
   sql.query(query, [profile.password, profile.email], (err, res) => {
     if (err) {
@@ -100,7 +101,7 @@ User.updateCity = (profile, result) => {
 
 //update name and password
 User.updateNameAndPassword = (profile, result) => {
-  const query = `UPDATE users SET name=? password=? WHERE email=?`;
+  const query = `UPDATE users SET name=?, password=? WHERE email=?`;
   sql.query(
     query,
     [profile.name, profile.password, profile.email],
@@ -116,7 +117,7 @@ User.updateNameAndPassword = (profile, result) => {
 
 //update name and city
 User.updateNameAndCity = (profile, result) => {
-  const query = `UPDATE users SET name=? city=? WHERE email=?`;
+  const query = `UPDATE users SET name=?, city=? WHERE email=?`;
   sql.query(query, [profile.name, profile.city, profile.email], (err, res) => {
     if (err) {
       console.log(err.message);
@@ -128,7 +129,7 @@ User.updateNameAndCity = (profile, result) => {
 
 //update city and password
 User.updateCityAndPassword = (profile, result) => {
-  const query = `UPDATE users SET city=? password=? WHERE email=?`;
+  const query = `UPDATE users SET city=?, password=? WHERE email=?`;
   sql.query(
     query,
     [profile.city, profile.password, profile.email],

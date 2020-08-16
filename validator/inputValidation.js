@@ -55,7 +55,7 @@ module.exports.validateUpdateUserData = (data) => {
   const status = {};
   if (!data.email) {
     errors.name = "please add email to update your profile";
-  } else if (!data.name || !data.city || !data.password) {
+  } else if (!data.name && !data.city && !data.password) {
     errors.name = "please add a field to update";
   } else if (!data.name && !data.city) {
     console.log("update password");
@@ -88,11 +88,11 @@ module.exports.validateUpdateUserData = (data) => {
     command.push({
       city: data.city,
       password: data.password,
-      email: email,
+      email: data.email,
     });
     status.code = 5;
   } else if (!data.password) {
-    log("update name and city");
+    console.log("update name and city");
     command.push({
       name: data.name,
       city: data.city,
@@ -104,7 +104,33 @@ module.exports.validateUpdateUserData = (data) => {
   return {
     errors,
     isValid: isEmpty(errors),
-    command,
+    command: command[0],
     code: status.code,
+  };
+};
+
+module.exports.validateFollowUserData = (data) => {
+  const errors = {};
+  data.email = !isEmpty(data.email) ? data.email : "";
+  data.fEmail = !isEmpty(data.fEmail) ? data.fEmail : "";
+  data.follow = !isEmpty(data.follow) ? data.follow : false;
+  if (validator.isEmpty(data.email)) {
+    errors.name = "please add email";
+  } else if (!validator.isEmail(data.email)) {
+    errors.name = "please add valid email";
+  }
+
+  if (validator.isEmpty(data.fEmail)) {
+    errors.name = "please add email to follow";
+  } else if (!validator.isEmail(data.fEmail)) {
+    errors.name = "please add valid email email to follow";
+  }
+
+  if (!validator.isBoolean(data.follow)) {
+    errors.name = "not a boolean";
+  }
+  return {
+    errors,
+    isValid: isEmpty(errors),
   };
 };
