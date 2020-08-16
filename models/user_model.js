@@ -23,6 +23,7 @@ User.create = (newUser, result) => {
       result(err);
       return;
     }
+    console.log(res.insertId);
     result(null, res);
   });
 };

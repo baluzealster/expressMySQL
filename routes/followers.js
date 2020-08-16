@@ -1,4 +1,5 @@
 const User = require("../models/user_model");
+const Follow = require("../models/followers_model");
 const Router = require("express").Router();
 const { validateFollowUserData } = require("../validator/inputValidation");
 
@@ -14,7 +15,13 @@ Router.post("/follow", (req, res) => {
           msg: "email that you trying to follow is not exists",
         });
       } else {
+        const followObject = {
+          email: req.body.email,
+          femail: req.body.femail,
+        };
+        Follow.followUser(followObject);
       }
     });
   }
 });
+module.exports = Router;
