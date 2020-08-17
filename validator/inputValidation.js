@@ -113,17 +113,17 @@ module.exports.validateFollowUserData = (data) => {
   const errors = {};
   data.email = !isEmpty(data.email) ? data.email : "";
   data.fEmail = !isEmpty(data.fEmail) ? data.fEmail : "";
-  data.follow = !isEmpty(data.follow) ? data.follow : false;
+  data.follow = !isEmpty(data.follow) ? data.follow : "";
   if (validator.isEmpty(data.email)) {
     errors.name = "please add email";
   } else if (!validator.isEmail(data.email)) {
     errors.name = "please add valid email";
   }
 
-  if (validator.isEmpty(data.fEmail)) {
+  if (validator.isEmpty(data.femail)) {
     errors.name = "please add email to follow";
-  } else if (!validator.isEmail(data.fEmail)) {
-    errors.name = "please add valid email email to follow";
+  } else if (validator.isEmail(data.fEmail)) {
+    errors.name = "please add valid email to follow";
   }
 
   if (!validator.isBoolean(data.follow)) {

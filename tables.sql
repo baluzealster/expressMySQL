@@ -26,3 +26,10 @@ CREATE TABLE IF NOT EXISTS `followers` (
 );
 ALTER TABLE `followers` ADD PRIMARY KEY(`id`), FOREIGN KEY(`email`) REFERENCES users(`email`);
 ALTER TABLE `users` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+
+ALTER TABLE `folowers` CHANGE COLUMN `id` `id` INT(11) NOT NULL AUTO_INCREMENT ;
+
+
+
+SELECT t1.following, t1.email, t2.followers FROM (SELECT count(email) AS following , email FROM followers WHERE email=?) AS t1,(SELECT count(femail) AS  followers FROM followers WHERE femail=?) AS t2;

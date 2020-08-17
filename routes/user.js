@@ -1,10 +1,12 @@
 const User = require("../models/user_model");
+const Follow = require("../models/follow_model");
 const express = require("express");
 const Router = express.Router();
 const {
   validateLoginInput,
   validateSignUpData,
   validateUpdateUserData,
+  validateFollowUserData,
 } = require("../validator/inputValidation");
 
 Router.post("/register", (req, res) => {
@@ -157,6 +159,37 @@ Router.put("/update", (req, res) => {
         }
       });
     }
+  }
+});
+
+Router.post("/follow", (req, res) => {
+  const { isValid, errors } = validateFollowUserData(req.body);
+  if (!isValid) {
+    res.status(400).send(errors);
+  } else {
+    User.getUserByEmail(req.body.email, (err, emailExisted) => {
+      if (!emailExisted) {
+        res.json({
+          success: false,
+          msg: "email that you trying to follow is not exists",
+        });
+      } else {
+        const followObject = {
+          email: req.body.email,
+          femail: req.body.femail,
+        };
+        Follow.followUser(followObject, (err, followUser) => {
+          if (err) {
+            console.log("error: ", err);
+            res.send(err);
+          }
+          res.json({
+            success: true,
+            msg: "follow successfull",
+          });
+        });
+      }
+    });
   }
 });
 
