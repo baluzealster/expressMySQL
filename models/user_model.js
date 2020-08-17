@@ -29,22 +29,23 @@ User.create = (newUser, result) => {
 };
 
 //get the user from the database on logIn
-User.getUserByCreds = (user, result) => {
-  const query = `SELECT * FROM users WHERE email="${user.email}" AND password="${user.password}";`;
-  sql.query(query, (err, res) => {
-    if (err) throw err;
-    console.log(res);
-    result(null, res);
-  });
-};
+// User.getUserByCreds = (user, result) => {
+//   const query = `SELECT name,email,profilePic,city, FROM users WHERE email=? AND password=?`;
+//   sql.query(query, [user.email, user.password], (err, res) => {
+//     if (err) throw err;
+//     console.log(res);
+//     result(null, res[0]);
+//   });
+// };
 
 User.getUserByEmail = (email, result) => {
-  sql.query(`SELECT email FROM users WHERE email="${email}";`, (err, res) => {
+  sql.query(`SELECT * FROM users WHERE email=?`, [email], (err, res) => {
     if (err) {
-      console.log("error: ", err);
+      console.log("error: ", err.msg);
       result(err);
       return;
     }
+    console.log(res);
     result(null, res[0]);
   });
 };

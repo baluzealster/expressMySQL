@@ -1,5 +1,6 @@
 const validator = require("validator");
 const isEmpty = require("is-empty");
+var bcrypt = require("bcryptjs");
 
 module.exports.validateLoginInput = (data) => {
   const errors = {};

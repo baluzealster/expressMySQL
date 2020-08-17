@@ -3,4 +3,5 @@ module.exports = {
   USER: "root",
   PASSWORD: "properly",
   DB: "users",
+  SECRET: "express-mySQL-screct",
 };

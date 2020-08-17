@@ -20,7 +20,6 @@ Follow.followUser = (data, result) => {
         console.log("data: ", data[key]);
         Follow.getFollowCount(data[key], (err, followData) => {
           if (err) {
-            console.log("line21", err);
             result(err, null);
           }
           if (followData) {
@@ -28,7 +27,6 @@ Follow.followUser = (data, result) => {
             response.push(
               Follow.updateUserRecord(followData, (err, updatedUser) => {
                 if (err) {
-                  console.log("line 28", err);
                   return err;
                 }
                 return;
@@ -75,6 +73,17 @@ Follow.getFollowCount = (email, result) => {
     };
     console.log("get follow count response: ", resObject);
     result(null, resObject);
+  });
+};
+
+Follow.getFollowByEmailId = (data, result) => {
+  const query = `SELECT count(email) AS count FROM followers WHERE email=? AND femail=?`;
+  sql.query(query, [data.email, data.femail], (err, res) => {
+    if (err) {
+      console.log("error", err);
+      result(err);
+    }
+    result(null, res[0].count);
   });
 };
 module.exports = Follow;
