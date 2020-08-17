@@ -4,13 +4,13 @@ var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 const User = require("../models/user_model");
 const Follow = require("../models/follow_model");
-//const jwt = require("../validator/jwtAuthenticator");
+const { verifyToken } = require("../middleware/jwtAuthenticator");
 const {
   validateLoginInput,
   validateSignUpData,
   validateUpdateUserData,
   validateFollowUserData,
-} = require("../validator/inputValidation");
+} = require("../middleware/inputValidation");
 const { SECRET } = require("../config/config");
 
 Router.post("/register", (req, res) => {
@@ -39,6 +39,7 @@ Router.post("/register", (req, res) => {
           res.json({
             success: true,
             msg: "user added successfully",
+            note: "please login using credentials",
           });
         });
       }
@@ -70,8 +71,8 @@ Router.get("/login", (req, res) => {
           delete user.password;
           res.json({
             success: true,
-            user: { ...user, accessToken: token },
             message: "logIn successfull",
+            accessToken: token,
           });
           // const params = {
           //   email: req.body.email,
@@ -94,7 +95,7 @@ Router.get("/login", (req, res) => {
   }
 });
 
-Router.put("/update", (req, res) => {
+Router.put("/update", verifyToken, (req, res) => {
   if (!req.body.profilePic) {
     const { errors, isValid, command, code } = validateUpdateUserData(req.body);
     if (!isValid) {
@@ -185,7 +186,7 @@ Router.put("/update", (req, res) => {
   }
 });
 
-Router.post("/follow", (req, res) => {
+Router.post("/follow", verifyToken, (req, res) => {
   const { isValid, errors } = validateFollowUserData(req.body);
   if (!isValid) {
     res.status(400).send(errors);
