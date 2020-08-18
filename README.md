@@ -12,7 +12,8 @@ iii) mysql> source <path of the .sql file in the project root folder>;
   
 iV) mysql> USE <database name>;
   
-v) mysql> DESC <table name>; check the schema of the table
+v) mysql> DESC <table name>; 
+  check the schema of the table
 
 # Run project locally
 
