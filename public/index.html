@@ -1,4 +1,16 @@
-<form method="post" enctype="multipart/form-data" action="/api/upload">
-  <input type="file" name="file" />
-  <input type="submit" value="Submit" />
-</form>
+<html>
+  <body>
+    <h1>Upload profile pic for the user</h1>
+    <form
+      name="formData"
+      method="post"
+      enctype="multipart/form-data"
+      action="/api/upload"
+    >
+      <input type="file" name="file" /><br /><br />
+      <label for="email">email:</label>
+      <input type="text" id="email" name="email" /><br /><br />
+      <input type="submit" value="Submit" />
+    </form>
+  </body>
+</html>

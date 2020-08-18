@@ -28,16 +28,6 @@ User.create = (newUser, result) => {
   });
 };
 
-//get the user from the database on logIn
-// User.getUserByCreds = (user, result) => {
-//   const query = `SELECT name,email,profilePic,city, FROM users WHERE email=? AND password=?`;
-//   sql.query(query, [user.email, user.password], (err, res) => {
-//     if (err) throw err;
-//     console.log(res);
-//     result(null, res[0]);
-//   });
-// };
-
 User.getUserByEmail = (email, result) => {
   sql.query(`SELECT * FROM users WHERE email=?`, [email], (err, res) => {
     if (err) {
@@ -56,92 +46,49 @@ User.updateProfilePic = (profile, result) => {
   sql.query(query, (err, res) => {
     if (err) {
       console.error(err.msg);
+      result(err);
       return;
     }
     result(null, res);
   });
 };
 
-//Update name in the database
-User.updateName = (profile, result) => {
-  const query = `UPDATE users SET  name=? WHERE email =?`;
-  console.log(query);
-  sql.query(query, [profile.name, profile.email], (err, res) => {
-    if (err) {
-      console.error(err.message);
-      return;
-    }
-    result(null, res);
-  });
-};
+//update user
+User.updateUser = (data, result) => {
+  let query = "UPDATE users SET ";
+  let passArray = [];
 
-//Update password in the database
-
-User.updatePassword = (profile, result) => {
-  console.log(profile);
-  const query = `UPDATE users SET password=? WHERE email=?`;
-  sql.query(query, [profile.password, profile.email], (err, res) => {
-    if (err) {
-      console.log(err.message);
-      return;
-    }
-    result(null, res);
-  });
-};
-
-//Update city
-User.updateCity = (profile, result) => {
-  const query = `UPDATE users SET city=? WHERE email=?`;
-  sql.query(query, [profile.city, profile.email], (err, res) => {
-    if (err) {
-      console.log(err.message);
-      return;
-    }
-    result(null, res);
-  });
-};
-
-//update name and password
-User.updateNameAndPassword = (profile, result) => {
-  const query = `UPDATE users SET name=?, password=? WHERE email=?`;
-  sql.query(
-    query,
-    [profile.name, profile.password, profile.email],
-    (err, res) => {
-      if (err) {
-        console.log(err.message);
-        return;
+  Object.keys(data).forEach((key, index, array) => {
+    console.log(data[key]);
+    if (array[array.length - 1] === "email") {
+      if (index === array.length - 2) {
+        console.log(index);
+        query += `${key}=?`;
+        passArray.push(data[key]);
+      } else if (key !== "email") {
+        query += `${key}=?,`;
+        passArray.push(data[key]);
       }
-      result(null, res);
+    } else if (key != "email") {
+      if (index === array.length - 1) {
+        query += `${key}=?`;
+        passArray.push(data[key]);
+      } else {
+        query += `${key}=?,`;
+        passArray.push(data[key]);
+      }
     }
-  );
-};
+  });
 
-//update name and city
-User.updateNameAndCity = (profile, result) => {
-  const query = `UPDATE users SET name=?, city=? WHERE email=?`;
-  sql.query(query, [profile.name, profile.city, profile.email], (err, res) => {
+  passArray.push(data.email);
+  query = query + ` WHERE email=?`;
+  sql.query(query, passArray, (err, res) => {
     if (err) {
-      console.log(err.message);
+      console.error(err.msg);
+      result(err);
       return;
     }
-    result(null, res);
+    result(null, res[0]);
   });
-};
-
-//update city and password
-User.updateCityAndPassword = (profile, result) => {
-  const query = `UPDATE users SET city=?, password=? WHERE email=?`;
-  sql.query(
-    query,
-    [profile.city, profile.password, profile.email],
-    (err, res) => {
-      if (err) {
-        console.log(err.message);
-        return;
-      }
-      result(null, res);
-    }
-  );
 };
 module.exports = User;

@@ -7,12 +7,12 @@ module.exports.validateLoginInput = (data) => {
   data.email = !isEmpty(data.email) ? data.email : "";
   data.password = !isEmpty(data.password) ? data.password : "";
   if (validator.isEmpty(data.email)) {
-    errors.name = "please enter the email addresss";
+    errors.message = "please enter the email addresss";
   } else if (!validator.isEmail(data.email)) {
-    errors.name = "please enter valid email address";
+    errors.message = "please enter valid email address";
   }
   if (validator.isEmpty(data.password)) {
-    errors.name = "please enter the password";
+    errors.message = "please enter the password";
   }
   return {
     errors,
@@ -28,21 +28,21 @@ module.exports.validateSignUpData = (data) => {
   data.email = !isEmpty(data.email) ? data.email : "";
   data.profilePic = !isEmpty(data.profilePic) ? data.profilePic : "";
   if (validator.isEmpty(data.name)) {
-    errors.name = "please enter the name";
+    errors.message = "please enter the name";
   }
   if (validator.isEmpty(data.email)) {
-    errors.name = "please enter the email address";
+    errors.message = "please enter the email address";
   } else if (!validator.isEmail(data.email)) {
-    errors.name = "please enter valid email address";
+    errors.message = "please enter valid email address";
   }
   if (validator.isEmpty(data.password)) {
-    errors.name = "please enter the password";
+    errors.message = "please enter the password";
   }
   if (validator.isEmpty(data.city)) {
-    errors.name = "please enter city name";
+    errors.message = "please enter city name";
   }
   if (validator.isEmpty(data.profilePic)) {
-    errors.name = "please select the profile pic";
+    errors.message = "please select the profile pic";
   }
   return {
     errors,
@@ -52,55 +52,66 @@ module.exports.validateSignUpData = (data) => {
 
 module.exports.validateUpdateUserData = (data) => {
   const errors = {};
-  const command = [];
-  const status = {};
-  if (!data.email) {
-    errors.name = "please add email to update your profile";
-  } else if (!data.name && !data.city && !data.password) {
-    errors.name = "please add a field to update";
-  } else if (!data.name && !data.city) {
-    console.log("update password");
-    command.push({ password: data.password, email: data.email });
-    status.code = 1;
-  } else if (!data.name && !data.password) {
-    console.log("update city");
-    command.push({
-      city: data.city,
-      email: data.email,
-    });
-    status.code = 2;
-  } else if (!data.password && !data.city) {
-    console.log("update name");
-    command.push({
-      name: data.name,
-      email: data.email,
-    });
-    status.code = 3;
-  } else if (!data.city) {
-    console.log("update name and password");
-    command.push({
-      name: data.name,
-      password: data.password,
-      email: data.email,
-    });
-    status.code = 4;
-  } else if (!data.name) {
-    console.log("update city and password");
-    command.push({
-      city: data.city,
-      password: data.password,
-      email: data.email,
-    });
-    status.code = 5;
-  } else if (!data.password) {
-    console.log("update name and city");
-    command.push({
-      name: data.name,
-      city: data.city,
-      email: data.email,
-    });
-    status.code = 6;
+  if (!isEmpty(data)) {
+    errors.message = "nothing is given to update";
+  } else if (!data.email) {
+    errors.message = "email is must to update anything ";
+  } 
+  return {
+    errors,
+    isValid:isEmpty(errors)
   }
+  }
+  // const errors = {};
+  // const command = [];
+  // const status = {};
+  // if (!data.email) {
+  //   errors.message = "please add email to update your profile";
+  // } else if (!data.name && !data.city && !data.password) {
+  //   errors.message = "please add a field to update";
+  // } else if (!data.name && !data.city) {
+  //   console.log("update password");
+  //   command.push({ password: data.password, email: data.email });
+  //   status.code = 1;
+  // } else if (!data.name && !data.password) {
+  //   console.log("update city");
+  //   command.push({
+  //     city: data.city,
+  //     email: data.email,
+  //   });
+  //   status.code = 2;
+  // } else if (!data.password && !data.city) {
+  //   console.log("update name");
+  //   command.push({
+  //     name: data.name,
+  //     email: data.email,
+  //   });
+  //   status.code = 3;
+  // } else if (!data.city) {
+  //   console.log("update name and password");
+  //   command.push({
+  //     name: data.name,
+  //     password: data.password,
+  //     email: data.email,
+  //   });
+  //   status.code = 4;
+  // } else if (!data.name) {
+  //   console.log("update city and password");
+  //   command.push({
+  //     city: data.city,
+  //     password: data.password,
+  //     email: data.email,
+  //   });
+  //   status.code = 5;
+  // } else if (!data.password) {
+  //   console.log("update name and city");
+  //   command.push({
+  //     name: data.name,
+  //     city: data.city,
+  //     email: data.email,
+  //   });
+  //   status.code = 6;
+  // }
 
   return {
     errors,
@@ -116,19 +127,19 @@ module.exports.validateFollowUserData = (data) => {
   data.fEmail = !isEmpty(data.fEmail) ? data.fEmail : "";
   data.follow = !isEmpty(data.follow) ? data.follow : "";
   if (validator.isEmpty(data.email)) {
-    errors.name = "please add email";
+    errors.message = "please add email";
   } else if (!validator.isEmail(data.email)) {
-    errors.name = "please add valid email";
+    errors.message = "please add valid email";
   }
 
   if (validator.isEmpty(data.femail)) {
-    errors.name = "please add email to follow";
+    errors.message = "please add email to follow";
   } else if (validator.isEmail(data.fEmail)) {
-    errors.name = "please add valid email to follow";
+    errors.message = "please add valid email to follow";
   }
 
   if (!validator.isBoolean(data.follow)) {
-    errors.name = "not a boolean";
+    errors.message = "not a boolean";
   }
   return {
     errors,

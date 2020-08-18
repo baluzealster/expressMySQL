@@ -97,89 +97,98 @@ Router.get("/login", (req, res) => {
 
 Router.put("/update", verifyToken, (req, res) => {
   if (!req.body.profilePic) {
-    const { errors, isValid, command, code } = validateUpdateUserData(req.body);
+    const { errors, isValid } = validateUpdateUserData(req.body);
     if (!isValid) {
       res.status(400).send(errors);
     } else {
       User.getUserByEmail(req.body.email, (err, emailExisted) => {
         if (!emailExisted) {
-          res.send("email doen't existed");
+          res.send("email doesn't existed");
         } else {
-          console.log(req.body);
-          if (code === 1) {
-            //update password
-            console.log(command);
-            User.updatePassword(command, (err, passupdated) => {
-              if (err) {
-                console.error(err.msg);
-              } else {
-                res.json({
-                  success: true,
-                  msg: "password updated successfully",
-                });
-              }
+          //console.log(req.body);
+          User.updateUser(req.body, (err, updated) => {
+            if (err) {
+              console.log("error: ", err.message);
+            }
+            res.json({
+              success: true,
+              msg: "user updated",
             });
-          } else if (code === 2) {
-            //update city
-            User.updateCity(command, (err, cityUpdated) => {
-              if (err) {
-                console.error(err.msg);
-              } else {
-                res.json({
-                  success: true,
-                  msg: "city updated successfully",
-                });
-              }
-            });
-          } else if (code === 3) {
-            //update name
-            User.updateName(command, (err, nameupdated) => {
-              if (err) {
-                console.error(err.msg);
-              } else {
-                res.json({
-                  success: true,
-                  msg: "name updated successfully",
-                });
-              }
-            });
-          } else if (code === 4) {
-            //update name and password
-            User.updateNameAndPassword(command, (err, namePassupdated) => {
-              if (err) {
-                console.error(err.msg);
-              } else {
-                res.json({
-                  success: true,
-                  msg: "name and password updated successfully",
-                });
-              }
-            });
-          } else if (code === 5) {
-            //update city and password
-            User.updateCityAndPassword(command, (err, cityPassupdated) => {
-              if (err) {
-                console.error(err.msg);
-              } else {
-                res.json({
-                  success: true,
-                  msg: "city pass updated successfully",
-                });
-              }
-            });
-          } else {
-            //update city and name
-            User.updateNameAndCity(command, (err, cityAndNameUpdated) => {
-              if (err) {
-                console.error(err.msg);
-              } else {
-                res.json({
-                  success: true,
-                  msg: "city and name updated successfully",
-                });
-              }
-            });
-          }
+          });
+          // if (code === 1) {
+          //   //update password
+          //   console.log(command);
+          //   User.updatePassword(command, (err, passupdated) => {
+          //     if (err) {
+          //       console.error(err.msg);
+          //     } else {
+          //       res.json({
+          //         success: true,
+          //         msg: "password updated successfully",
+          //       });
+          //     }
+          //   });
+          // } else if (code === 2) {
+          //   //update city
+          //   User.updateCity(command, (err, cityUpdated) => {
+          //     if (err) {
+          //       console.error(err.msg);
+          //     } else {
+          //       res.json({
+          //         success: true,
+          //         msg: "city updated successfully",
+          //       });
+          //     }
+          //   });
+          // } else if (code === 3) {
+          //   //update name
+          //   User.updateName(command, (err, nameupdated) => {
+          //     if (err) {
+          //       console.error(err.msg);
+          //     } else {
+          //       res.json({
+          //         success: true,
+          //         msg: "name updated successfully",
+          //       });
+          //     }
+          //   });
+          // } else if (code === 4) {
+          //   //update name and password
+          //   User.updateNameAndPassword(command, (err, namePassupdated) => {
+          //     if (err) {
+          //       console.error(err.msg);
+          //     } else {
+          //       res.json({
+          //         success: true,
+          //         msg: "name and password updated successfully",
+          //       });
+          //     }
+          //   });
+          // } else if (code === 5) {
+          //   //update city and password
+          //   User.updateCityAndPassword(command, (err, cityPassupdated) => {
+          //     if (err) {
+          //       console.error(err.msg);
+          //     } else {
+          //       res.json({
+          //         success: true,
+          //         msg: "city pass updated successfully",
+          //       });
+          //     }
+          //   });
+          // } else {
+          //   //update city and name
+          //   User.updateNameAndCity(command, (err, cityAndNameUpdated) => {
+          //     if (err) {
+          //       console.error(err.msg);
+          //     } else {
+          //       res.json({
+          //         success: true,
+          //         msg: "city and name updated successfully",
+          //       });
+          //     }
+          //   });
+          // }
         }
       });
     }
