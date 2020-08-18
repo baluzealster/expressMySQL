@@ -88,3 +88,28 @@ module.exports.validateFollowUserData = (data) => {
     isValid: isEmpty(errors),
   };
 };
+module.exports.validateUnFollowUserData = (data) => {
+  const errors = {};
+  data.email = !isEmpty(data.email) ? data.email : "";
+  data.unFollowEmail = !isEmpty(data.unFollowEmail) ? data.unFollowEmail : "";
+  data.unfollow = !isEmpty(data.unfollow) ? data.unfollow : "";
+  if (validator.isEmpty(data.email)) {
+    errors.message = "please add email";
+  } else if (!validator.isEmail(data.email)) {
+    errors.message = "please add valid email";
+  }
+
+  if (validator.isEmpty(data.unFollowEmail)) {
+    errors.message = "please add email to follow";
+  } else if (!validator.isEmail(data.unFollowEmail)) {
+    errors.message = "please add valid email to follow";
+  }
+
+  if (!validator.isBoolean(data.unfollow)) {
+    errors.message = "not a boolean";
+  }
+  return {
+    errors,
+    isValid: isEmpty(errors),
+  };
+};

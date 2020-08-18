@@ -4,12 +4,14 @@ var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 const User = require("../models/user_model");
 const Follow = require("../models/follow_model");
+const UnFollow = require("../models/unfollow_model");
 const { verifyToken } = require("../middleware/jwtAuthenticator");
 const {
   validateLoginInput,
   validateSignUpData,
   validateUpdateUserData,
   validateFollowUserData,
+  validateUnFollowUserData,
 } = require("../middleware/inputValidation");
 const { SECRET } = require("../config/config");
 
@@ -140,6 +142,37 @@ Router.post("/follow", verifyToken, (req, res) => {
             });
           }
         });
+      }
+    });
+  }
+});
+
+Router.post("/unfollow", (req, res) => {
+  const { errors, isValid } = validateUnFollowUserData(req.body);
+  if (!isValid) {
+    return res.status(400).send(errors);
+  } else {
+    User.getUserByEmail(req.body.email, (err, user) => {
+      if (!user) {
+        res.json({
+          success: false,
+          msg: "email that you trying to unfollow is not exists",
+        });
+      } else {
+        Follow.unFollowUser(
+          req.body,
+          (err,
+          (unfollowed) => {
+            if (err) {
+              console.log("error: ", err.message);
+              return res.send(err);
+            }
+            res.json({
+              success: true,
+              message: "unfollow successfull",
+            });
+          })
+        );
       }
     });
   }
