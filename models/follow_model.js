@@ -42,7 +42,7 @@ Follow.followUser = (data, result) => {
 
 Follow.updateUserRecord = (data, result) => {
   console.log("updateuser input: ", data);
-  const query = `UPDATE users SET follow=?, following=? WHERE email=?`;
+  const query = `UPDATE users SET followers=?, following=? WHERE email=?`;
   sql.query(query, [data.followers, data.following, data.email], (err, res) => {
     if (err) {
       console.log("error: ", err);

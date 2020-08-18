@@ -52,7 +52,7 @@ module.exports.validateSignUpData = (data) => {
 
 module.exports.validateUpdateUserData = (data) => {
   const errors = {};
-  if (!isEmpty(data)) {
+  if (isEmpty(data)) {
     errors.message = "nothing is given to update";
   } else if (!data.email) {
     errors.message = "email is must to update anything ";
@@ -76,7 +76,7 @@ module.exports.validateFollowUserData = (data) => {
 
   if (validator.isEmpty(data.followEmail)) {
     errors.message = "please add email to follow";
-  } else if (validator.isEmail(data.followEmail)) {
+  } else if (!validator.isEmail(data.followEmail)) {
     errors.message = "please add valid email to follow";
   }
 
