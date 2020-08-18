@@ -42,8 +42,8 @@ User.getUserByEmail = (email, result) => {
 
 //Update profilePic in the database
 User.updateProfilePic = (profile, result) => {
-  const query = `UPDATE users SET profilePic=${profile.picture} WHERE email="${profile.email}"`;
-  sql.query(query, (err, res) => {
+  const query = `UPDATE users SET profilePic=? WHERE email=?`;
+  sql.query(query, [profile.profilePic, profile.email], (err, res) => {
     if (err) {
       console.error(err.msg);
       result(err);

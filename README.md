@@ -25,6 +25,8 @@ iii) expressMySQL> npm i
 
 iv) fill the details in the config/config.js file
 
+v) expressMySQL> npm start
+
 # Curl for the api requests
 
 i) Register curl

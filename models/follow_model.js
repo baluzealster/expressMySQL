@@ -47,7 +47,7 @@ Follow.updateUserRecord = (data, result) => {
     if (err) {
       console.log("error: ", err);
       result(err);
-      //return;
+      return;
     }
     //console.log("after update user", res);
     result(null, res);
@@ -81,6 +81,7 @@ Follow.getFollowByEmailId = (data, result) => {
     if (err) {
       console.log("error", err);
       result(err);
+      return;
     }
     result(null, res[0].count);
   });
