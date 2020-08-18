@@ -1,13 +1,12 @@
 const { response } = require("express");
 const sql = require("./db");
-const User = require("./user_model");
 const Follow = function (data) {
   (this.email = data.email), (this.follow = data.follow);
 };
 
 Follow.followUser = (data, result) => {
-  const query = `INSERT INTO followers SET email=?, femail=?`;
-  sql.query(query, [data.email, data.femail], (err, res) => {
+  const query = `INSERT INTO follow SET email=?, followEmail=?`;
+  sql.query(query, [data.email, data.followEmail], (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err);
@@ -43,7 +42,7 @@ Follow.followUser = (data, result) => {
 
 Follow.updateUserRecord = (data, result) => {
   console.log("updateuser input: ", data);
-  const query = `UPDATE users SET followers=?, following=? WHERE email=?`;
+  const query = `UPDATE users SET follow=?, following=? WHERE email=?`;
   sql.query(query, [data.followers, data.following, data.email], (err, res) => {
     if (err) {
       console.log("error: ", err);
@@ -58,8 +57,8 @@ Follow.updateUserRecord = (data, result) => {
 Follow.getFollowCount = (email, result) => {
   console.log("email in follow count:", email);
   const query = `SELECT t1.following, t2.followers FROM
-    (SELECT count(email) AS following FROM followers WHERE email=?) AS t1,
-    (SELECT count(femail) AS  followers FROM followers WHERE femail=?) AS t2`;
+    (SELECT count(email) AS following FROM follow WHERE email=?) AS t1,
+    (SELECT count(followEmail) AS  followers FROM follow WHERE followEmail=?) AS t2`;
   sql.query(query, [email, email], (err, res) => {
     if (err) {
       console.log("error: ", err);
@@ -77,8 +76,8 @@ Follow.getFollowCount = (email, result) => {
 };
 
 Follow.getFollowByEmailId = (data, result) => {
-  const query = `SELECT count(email) AS count FROM followers WHERE email=? AND femail=?`;
-  sql.query(query, [data.email, data.femail], (err, res) => {
+  const query = `SELECT count(email) AS count FROM follow WHERE email=? AND followEmail=?`;
+  sql.query(query, [data.email, data.followEmail], (err, res) => {
     if (err) {
       console.log("error", err);
       result(err);

@@ -1,35 +1,28 @@
 CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(11) NOT NULL,
-  `name` varchar(200) NOT NULL,
-  `email` varchar(200) NOT NULL,
-  `city` varchar(100) NOT NULL,
-  `password` varchar(20) NOT NULL,
+	`userId` INT(11) NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(50) NOT NULL COLLATE 'utf8_unicode_ci',
+	`password` VARCHAR(200) NOT NULL COLLATE 'utf8_unicode_ci',
+	`email` VARCHAR(100) NOT NULL COLLATE 'utf8_unicode_ci',
+	`city` VARCHAR(50) NOT NULL COLLATE 'utf8_unicode_ci',
   `followers` int(10) NOT NULL DEFAULT 0,
   `following` int(10) NOT NULL DEFAULT 0,
-  `profilePic` varchar(200) NOT NULL DEFAULT 'profile.jpg',
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
+	`createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`userId`),
+	UNIQUE INDEX `email` (`email`)
+)
+COLLATE='utf8_unicode_ci'
+ENGINE=InnoDB;
 
-ALTER TABLE `users` ADD PRIMARY KEY (`email`,'id');
-ALTER TABLE `users` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+CREATE TABLE IF NOT EXISTS `follow` (
+	`followId` INT(11) NOT NULL AUTO_INCREMENT,
+	`email` VARCHAR(100) NOT NULL COLLATE  'utf8_unicode_ci',
+  `followEmail` VARCHAR(100) NOT NULL COLLATE  'utf8_unicode_ci',
+	`createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`followId`),
+	FOREIGN KEY (`email`) REFERENCES `users`(`email`)
+)
+COLLATE='utf8_unicode_ci'
+ENGINE=InnoDB;
 
-
-INSERT INTO `users` (`id`, `name`, `username`, `email`,`phone`,`profilePic`) VALUES
-(12345678900, 'balu', "baluzealster",`balu@gmail.com`,`+919533546445`,`profile.jpg`);
-
-CREATE TABLE IF NOT EXISTS `followers` (
-  `id` varchar(12) NOT NULL,
-  `email` varchar(200) NOT NULL,
-  `femail` varchar(15) NOT NULL,
-  `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updatedAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-ALTER TABLE `followers` ADD PRIMARY KEY(`id`), FOREIGN KEY(`email`) REFERENCES users(`email`);
-ALTER TABLE `users` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
-
-ALTER TABLE `folowers` CHANGE COLUMN `id` `id` INT(11) NOT NULL AUTO_INCREMENT ;
-
-
-
-SELECT t1.following, t1.email, t2.followers FROM (SELECT count(email) AS following , email FROM followers WHERE email=?) AS t1,(SELECT count(femail) AS  followers FROM followers WHERE femail=?) AS t2;
+INSERT INTO `users` (`userId`, `name`, `password`, `email`,`city`) VALUES
+(9182822331, 'balu', "sdnfgabfkjdbfkgbo4uowtqwotwuetrgpqwtrt",`balu@gmail.com`,`+919533546445`,`Guntur`);

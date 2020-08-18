@@ -56,75 +56,17 @@ module.exports.validateUpdateUserData = (data) => {
     errors.message = "nothing is given to update";
   } else if (!data.email) {
     errors.message = "email is must to update anything ";
-  } 
-  return {
-    errors,
-    isValid:isEmpty(errors)
   }
-  }
-  // const errors = {};
-  // const command = [];
-  // const status = {};
-  // if (!data.email) {
-  //   errors.message = "please add email to update your profile";
-  // } else if (!data.name && !data.city && !data.password) {
-  //   errors.message = "please add a field to update";
-  // } else if (!data.name && !data.city) {
-  //   console.log("update password");
-  //   command.push({ password: data.password, email: data.email });
-  //   status.code = 1;
-  // } else if (!data.name && !data.password) {
-  //   console.log("update city");
-  //   command.push({
-  //     city: data.city,
-  //     email: data.email,
-  //   });
-  //   status.code = 2;
-  // } else if (!data.password && !data.city) {
-  //   console.log("update name");
-  //   command.push({
-  //     name: data.name,
-  //     email: data.email,
-  //   });
-  //   status.code = 3;
-  // } else if (!data.city) {
-  //   console.log("update name and password");
-  //   command.push({
-  //     name: data.name,
-  //     password: data.password,
-  //     email: data.email,
-  //   });
-  //   status.code = 4;
-  // } else if (!data.name) {
-  //   console.log("update city and password");
-  //   command.push({
-  //     city: data.city,
-  //     password: data.password,
-  //     email: data.email,
-  //   });
-  //   status.code = 5;
-  // } else if (!data.password) {
-  //   console.log("update name and city");
-  //   command.push({
-  //     name: data.name,
-  //     city: data.city,
-  //     email: data.email,
-  //   });
-  //   status.code = 6;
-  // }
-
   return {
     errors,
     isValid: isEmpty(errors),
-    command: command[0],
-    code: status.code,
   };
 };
 
 module.exports.validateFollowUserData = (data) => {
   const errors = {};
   data.email = !isEmpty(data.email) ? data.email : "";
-  data.fEmail = !isEmpty(data.fEmail) ? data.fEmail : "";
+  data.followEmail = !isEmpty(data.followEmail) ? data.followEmail : "";
   data.follow = !isEmpty(data.follow) ? data.follow : "";
   if (validator.isEmpty(data.email)) {
     errors.message = "please add email";
@@ -132,9 +74,9 @@ module.exports.validateFollowUserData = (data) => {
     errors.message = "please add valid email";
   }
 
-  if (validator.isEmpty(data.femail)) {
+  if (validator.isEmpty(data.followEmail)) {
     errors.message = "please add email to follow";
-  } else if (validator.isEmail(data.fEmail)) {
+  } else if (validator.isEmail(data.followEmail)) {
     errors.message = "please add valid email to follow";
   }
 

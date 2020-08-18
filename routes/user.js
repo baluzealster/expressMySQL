@@ -74,21 +74,6 @@ Router.get("/login", (req, res) => {
             message: "logIn successfull",
             accessToken: token,
           });
-          // const params = {
-          //   email: req.body.email,
-          //   password: req.body.password,
-          // };
-          // User.getUserByCreds(params, (err, resUser) => {
-          //   if (err) {
-          //     console.error(err.msg);
-          //   } else {
-          //     res.json({
-          //       success: true,
-          //       user: resUser,
-          //       msg: "logIn successfull",
-          //     });
-          //   }
-          // });
         }
       }
     });
@@ -109,86 +94,13 @@ Router.put("/update", verifyToken, (req, res) => {
           User.updateUser(req.body, (err, updated) => {
             if (err) {
               console.log("error: ", err.message);
+              return res.send(err);
             }
             res.json({
               success: true,
               msg: "user updated",
             });
           });
-          // if (code === 1) {
-          //   //update password
-          //   console.log(command);
-          //   User.updatePassword(command, (err, passupdated) => {
-          //     if (err) {
-          //       console.error(err.msg);
-          //     } else {
-          //       res.json({
-          //         success: true,
-          //         msg: "password updated successfully",
-          //       });
-          //     }
-          //   });
-          // } else if (code === 2) {
-          //   //update city
-          //   User.updateCity(command, (err, cityUpdated) => {
-          //     if (err) {
-          //       console.error(err.msg);
-          //     } else {
-          //       res.json({
-          //         success: true,
-          //         msg: "city updated successfully",
-          //       });
-          //     }
-          //   });
-          // } else if (code === 3) {
-          //   //update name
-          //   User.updateName(command, (err, nameupdated) => {
-          //     if (err) {
-          //       console.error(err.msg);
-          //     } else {
-          //       res.json({
-          //         success: true,
-          //         msg: "name updated successfully",
-          //       });
-          //     }
-          //   });
-          // } else if (code === 4) {
-          //   //update name and password
-          //   User.updateNameAndPassword(command, (err, namePassupdated) => {
-          //     if (err) {
-          //       console.error(err.msg);
-          //     } else {
-          //       res.json({
-          //         success: true,
-          //         msg: "name and password updated successfully",
-          //       });
-          //     }
-          //   });
-          // } else if (code === 5) {
-          //   //update city and password
-          //   User.updateCityAndPassword(command, (err, cityPassupdated) => {
-          //     if (err) {
-          //       console.error(err.msg);
-          //     } else {
-          //       res.json({
-          //         success: true,
-          //         msg: "city pass updated successfully",
-          //       });
-          //     }
-          //   });
-          // } else {
-          //   //update city and name
-          //   User.updateNameAndCity(command, (err, cityAndNameUpdated) => {
-          //     if (err) {
-          //       console.error(err.msg);
-          //     } else {
-          //       res.json({
-          //         success: true,
-          //         msg: "city and name updated successfully",
-          //       });
-          //     }
-          //   });
-          // }
         }
       });
     }
@@ -209,7 +121,7 @@ Router.post("/follow", verifyToken, (req, res) => {
       } else {
         const followObject = {
           email: req.body.email,
-          femail: req.body.femail,
+          followEmail: req.body.followEmail,
         };
         Follow.getFollowByEmailId(followObject, (err, followExists) => {
           if (followExists) {
