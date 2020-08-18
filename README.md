@@ -17,4 +17,4 @@ ii) cd expressMySQL
 iii) expressMySQL> npm i
 iv) fill the details in the config/config.js file
 
-curl for the project
+# Curl for the api requests
