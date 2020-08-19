@@ -23,6 +23,3 @@ CREATE TABLE IF NOT EXISTS `follow` (
 )
 COLLATE='utf8_unicode_ci'
 ENGINE=InnoDB;
-
-INSERT INTO `users` (`userId`, `name`, `password`, `email`,`city`) VALUES
-(9182822331, 'balu', "sdnfgabfkjdbfkgbo4uowtqwotwuetrgpqwtrt",`balu@gmail.com`,`+919533546445`,`Guntur`);
