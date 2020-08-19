@@ -114,7 +114,7 @@ Router.post("/follow", verifyToken, (req, res) => {
   if (!isValid) {
     res.status(400).send(errors);
   } else {
-    User.getUserByEmail(req.body.email, (err, emailExisted) => {
+    User.getUserByEmail(req.body.followEmail, (err, emailExisted) => {
       if (!emailExisted) {
         res.json({
           success: false,

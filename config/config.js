@@ -1,7 +1,7 @@
 module.exports = {
-  HOST: "localhost",
-  USER: "root",
-  PASSWORD: "properly",
-  DB: "users",
+  HOST: "remotemysql.com",
+  USER: "*",
+  PASSWORD: "*",
+  DB: "*",
   SECRET: "express-mySQL-screct",
 };

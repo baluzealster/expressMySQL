@@ -29,7 +29,7 @@ User.create = (newUser, result) => {
 };
 
 User.getUserByEmail = (email, result) => {
-  sql.query(`SELECT * FROM users WHERE email=?`, [email], (err, res) => {
+  sql.query(`SELECT email FROM users WHERE email=?`, [email], (err, res) => {
     if (err) {
       console.log("error: ", err.msg);
       result(err);
