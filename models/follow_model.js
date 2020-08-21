@@ -1,7 +1,7 @@
 const { response } = require("express");
 const sql = require("./db");
 const Follow = function (data) {
-  (this.email = data.email), (this.follow = data.follow);
+  (this.email = data.email), (this.follow = data.followEmail);
 };
 
 Follow.followUser = (data, result) => {

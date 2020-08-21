@@ -6,17 +6,26 @@ const Follow = require("./follow_model");
 
 UnFollow.unFollowUser = (data, result) => {
   let response = [];
-  Object.keys(data).forEach((key, index) => {
-    Follow.getFollowCount(data[key], (err, followData) => {
+  Object.keys(data).forEach((key, index, array) => {
+    Follow.getFollowCount(data[key], (err, followDetails) => {
       if (err) {
-        result(err, null);
-      }
-      if (followData) {
-        console.log("followdata: ", followData);
+        console.log("error: ", err);
+        result(err);
+        return;
+      } else if (!followDetails) {
+        res.status(500).send("follow details has some error!!!!!!");
+        return;
+      } else {
+        if (key === "unFollowEmail") {
+          followDetails.followers = followDetails.followers - 1;
+        } else if (key === "email") {
+          followDetails.following = followDetails.following - 1;
+        }
         response.push(
-          UnFollow.updateUserRecord(followData, (err, updatedUser) => {
+          UnFollow.updateUserRecord(followDetails, (err, updatedUser) => {
             if (err) {
-              return err;
+              result(err);
+              return;
             }
             return;
           })
@@ -38,19 +47,15 @@ UnFollow.unFollowUser = (data, result) => {
 
 UnFollow.updateUserRecord = (data, result) => {
   const query = `UPDATE users SET followers=?, following=? WHERE email=?`;
-  sql.query(
-    query,
-    [data.followers - 1, data.following - 1, data.email],
-    (err, res) => {
-      if (err) {
-        console.log("error: ", err);
-        result(err);
-        return;
-      }
-      //console.log("after update user", res);
-      result(null, res);
+  sql.query(query, [data.followers, data.following, data.email], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err);
+      return;
     }
-  );
+    //console.log("after update user", res);
+    result(null, res);
+  });
 };
 
 module.exports = UnFollow;

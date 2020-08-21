@@ -21,7 +21,7 @@ Router.post("/register", (req, res) => {
     return res.status(400).send(errors);
   } else {
     User.getUserByEmail(req.body.email, (err, existingEmail) => {
-      if (existingEmail) {
+      if (existingEmail?.email) {
         res.json({
           success: false,
           msg: "email already exists",
@@ -51,10 +51,12 @@ Router.post("/register", (req, res) => {
 
 Router.get("/login", (req, res) => {
   const { errors, isValid } = validateLoginInput(req.body);
+  console.log("ello");
   if (!isValid) {
     return res.status(400).send(errors);
   } else {
     User.getUserByEmail(req.body.email, (err, user) => {
+      if (err) throw err;
       if (!user) {
         res.send("email not registered!!!!");
         return;
@@ -89,7 +91,7 @@ Router.put("/update", verifyToken, (req, res) => {
       res.status(400).send(errors);
     } else {
       User.getUserByEmail(req.body.email, (err, emailExisted) => {
-        if (!emailExisted) {
+        if (!emailExisted?.email) {
           res.send("email doesn't existed");
         } else {
           //console.log(req.body);
@@ -115,7 +117,7 @@ Router.post("/follow", verifyToken, (req, res) => {
     res.status(400).send(errors);
   } else {
     User.getUserByEmail(req.body.followEmail, (err, emailExisted) => {
-      if (!emailExisted) {
+      if (!emailExisted?.email) {
         res.json({
           success: false,
           msg: "email that you trying to follow is not exists",
@@ -137,6 +139,7 @@ Router.post("/follow", verifyToken, (req, res) => {
               }
               res.json({
                 success: true,
+                followUser,
                 msg: "follow successfull",
               });
             });
@@ -152,27 +155,24 @@ Router.post("/unfollow", (req, res) => {
   if (!isValid) {
     return res.status(400).send(errors);
   } else {
-    User.getUserByEmail(req.body.email, (err, user) => {
+    User.getFollowByEmailId(req.body, (err, user) => {
       if (!user) {
         res.json({
           success: false,
-          msg: "email that you trying to unfollow is not exists",
+          msg: "no follow record exists!!!!!",
         });
       } else {
-        Follow.unFollowUser(
-          req.body,
-          (err,
-          (unfollowed) => {
-            if (err) {
-              console.log("error: ", err.message);
-              return res.send(err);
-            }
-            res.json({
-              success: true,
-              message: "unfollow successfull",
-            });
-          })
-        );
+        UnFollow.unFollowUser(req.body, (err, unfollowed) => {
+          if (err) {
+            console.log("error: ", err.message);
+            return res.send(err);
+          }
+          res.json({
+            success: true,
+            unfollowed,
+            message: "unfollow successfull",
+          });
+        });
       }
     });
   }

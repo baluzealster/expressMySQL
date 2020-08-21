@@ -24,20 +24,24 @@ User.create = (newUser, result) => {
       return;
     }
     console.log(res.insertId);
-    result(null, res);
+    return result(null, res);
   });
 };
 
 User.getUserByEmail = (email, result) => {
-  sql.query(`SELECT email FROM users WHERE email=?`, [email], (err, res) => {
-    if (err) {
-      console.log("error: ", err.msg);
-      result(err);
-      return;
+  sql.query(
+    `SELECT email,password FROM users WHERE email=?`,
+    [email],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err.msg);
+        result(err);
+        return;
+      }
+      console.log(res);
+      result(null, res[0]);
     }
-    console.log(res);
-    result(null, res[0]);
-  });
+  );
 };
 
 //Update profilePic in the database
